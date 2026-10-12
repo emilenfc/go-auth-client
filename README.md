@@ -19,8 +19,11 @@ orders.GET("", authclient.RequirePermission("orders:read"), h.List)
 ## Install
 
 ```bash
-go get github.com/emilenfc/go-auth-client
+go get github.com/emilenfc/go-auth-client@v1.0.0
 ```
+
+Pin a release tag, not a commit. Requires Go 1.19+ and gin v1.9.0+; a newer
+gin or golang-jwt already in your service is kept as it is.
 
 ## Configure
 
