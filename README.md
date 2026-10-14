@@ -19,7 +19,7 @@ orders.GET("", authclient.RequirePermission("orders:read"), h.List)
 ## Install
 
 ```bash
-go get github.com/emilenfc/go-auth-client@v1.0.0
+go get github.com/emilenfc/go-auth-client@v1.1.0
 ```
 
 Pin a release tag, not a commit. Requires Go 1.19+ and gin v1.9.0+; a newer
@@ -68,8 +68,9 @@ guards go on routes and answer *may they do this*. Keeping them separate is what
 lets a route be authenticated without being permission-gated — "list my own
 orders" needs to know who you are and nothing more.
 
-`Identity` carries `UserID` (the token's `sub`), `Email`, `Roles`,
-`Permissions`, `TokenVersion` and `ExpiresAt`.
+`Identity` carries `UserID` (the token's `sub`), `Email`, `PhoneNumber`,
+`Roles`, `Permissions`, `TokenVersion` and `ExpiresAt`. `PhoneNumber` is empty
+when the auth service does not put a `phone_number` claim in its tokens.
 
 ## Tests
 

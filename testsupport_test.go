@@ -91,6 +91,7 @@ func (f *fakeAuth) claims() jwt.MapClaims {
 	return jwt.MapClaims{
 		"sub":           "11111111-2222-3333-4444-555555555555",
 		"email":         "ada@example.com",
+		"phone_number":  "+250788123456",
 		"roles":         []string{"user", "order_reader"},
 		"permissions":   []string{"orders:read", "users:read"},
 		"token_version": 3,

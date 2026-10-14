@@ -48,8 +48,11 @@ var (
 
 // Identity is the authenticated caller, reconstructed from a verified token.
 type Identity struct {
-	UserID       string
-	Email        string
+	UserID string
+	Email  string
+	// PhoneNumber is the caller's phone number (E.164, e.g. +250788123456).
+	// Empty if the token has no phone_number claim.
+	PhoneNumber  string
 	Roles        []string
 	Permissions  PermissionSet
 	TokenVersion int
@@ -102,6 +105,7 @@ func (s PermissionSet) HasAll(names ...string) bool {
 type claims struct {
 	jwt.RegisteredClaims
 	Email        string   `json:"email"`
+	PhoneNumber  string   `json:"phone_number"`
 	Roles        []string `json:"roles"`
 	Permissions  []string `json:"permissions"`
 	TokenVersion int      `json:"token_version"`
@@ -250,6 +254,7 @@ func (v *Verifier) Verify(ctx context.Context, token string) (*Identity, error) 
 	identity := &Identity{
 		UserID:       c.Subject,
 		Email:        c.Email,
+		PhoneNumber:  c.PhoneNumber,
 		Roles:        c.Roles,
 		Permissions:  permissions,
 		TokenVersion: c.TokenVersion,

@@ -177,6 +177,9 @@ func TestVerifyReturnsTheCallersIdentity(t *testing.T) {
 	if identity.Email != "ada@example.com" {
 		t.Errorf("Email = %q", identity.Email)
 	}
+	if identity.PhoneNumber != "+250788123456" {
+		t.Errorf("PhoneNumber = %q", identity.PhoneNumber)
+	}
 	if identity.TokenVersion != 3 {
 		t.Errorf("TokenVersion = %d, want 3", identity.TokenVersion)
 	}
@@ -395,4 +398,20 @@ func indexOf(haystack, needle string) int {
 		}
 	}
 	return -1
+}
+
+func TestPhoneNumberIsOptional(t *testing.T) {
+	auth := newFakeAuth(t)
+	v := auth.verifier(t)
+
+	claims := auth.claims()
+	delete(claims, "phone_number")
+
+	identity, err := v.Verify(context.Background(), auth.signRS256(t, claims))
+	if err != nil {
+		t.Fatalf("a token without phone_number was rejected: %v", err)
+	}
+	if identity.PhoneNumber != "" {
+		t.Errorf("PhoneNumber = %q, want empty", identity.PhoneNumber)
+	}
 }
